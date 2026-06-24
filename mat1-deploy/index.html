@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matematika 1 — vodič za kolokvije</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --paper:#faf9f6;
+    --paper-line:#e4e1d8;
+    --ink:#1c1d1f;
+    --ink-soft:#5b5d59;
+    --indigo:#2e3a8c;
+    --indigo-deep:#1c2563;
+    --amber:#c97b1f;
+    --teal:#0f6e56;
+    --coral:#993c1d;
+    --pink:#993556;
+    --card:#ffffff;
+    --border:#dedad0;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#15161a;
+      --paper-line:#26282e;
+      --ink:#eceae3;
+      --ink-soft:#9b9a93;
+      --indigo:#8b97e8;
+      --indigo-deep:#aab3f0;
+      --amber:#f0b15c;
+      --teal:#5dcaa5;
+      --coral:#f0997b;
+      --pink:#ed93b1;
+      --card:#1d1f24;
+      --border:#33353b;
+    }
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      linear-gradient(var(--paper-line) 1px, transparent 1px) 0 0/100% 28px,
+      var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    font-size:16px;
+    padding-bottom:80px;
+  }
+  header{
+    position:sticky; top:0; z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--border);
+    padding:18px 18px 0 18px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--indigo);
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:24px;
+    margin:4px 0 2px 0;
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:13px;
+    margin-bottom:14px;
+  }
+  nav{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding-bottom:14px;
+    scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none;}
+  nav a{
+    flex:0 0 auto;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:7px 12px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    color:var(--ink-soft);
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  nav a[data-status="done"]{ color:var(--ink); border-color:var(--indigo); }
+  nav a[data-status="progress"]{ color:var(--amber); border-color:var(--amber); }
+  nav a[data-status="todo"]{ opacity:0.45; }
+
+  main{ max-width:720px; margin:0 auto; padding:20px 16px 0 16px; }
+
+  .lesson{
+    margin-bottom:34px;
+  }
+  .lesson-head{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .lesson-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    padding:3px 8px;
+    border-radius:5px;
+    color:var(--card);
+    flex:0 0 auto;
+  }
+  .lesson h2{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:19px;
+    margin:0;
+  }
+  .tag-purple{ background:#534AB7; }
+  .tag-teal{ background:#0F6E56; }
+  .tag-pink{ background:#993556; }
+  .tag-coral{ background:#993C1D; }
+  .tag-blue{ background:#185FA5; }
+  .tag-amber{ background:#854F0B; }
+
+  details{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    margin-bottom:8px;
+    overflow:hidden;
+  }
+  summary{
+    list-style:none;
+    cursor:pointer;
+    padding:13px 16px;
+    font-weight:500;
+    font-size:14.5px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+  summary::-webkit-details-marker{ display:none; }
+  summary .chev{
+    font-family:'IBM Plex Mono', monospace;
+    color:var(--ink-soft);
+    transition:transform 0.15s ease;
+    flex:0 0 auto;
+  }
+  details[open] summary .chev{ transform:rotate(45deg); }
+  .body{
+    padding:0 16px 16px 16px;
+    border-top:1px solid var(--border);
+    padding-top:12px;
+    font-size:14.5px;
+  }
+  .body p{ margin:0 0 10px 0; }
+  .body ul{ margin:0 0 10px 0; padding-left:20px; }
+  .body li{ margin-bottom:5px; }
+  .note{
+    background:rgba(46,58,140,0.06);
+    border-left:3px solid var(--indigo);
+    padding:9px 12px;
+    border-radius:0 8px 8px 0;
+    font-size:13.5px;
+    margin:10px 0;
+  }
+  .warn{
+    background:rgba(201,123,31,0.08);
+    border-left:3px solid var(--amber);
+    padding:9px 12px;
+    border-radius:0 8px 8px 0;
+    font-size:13.5px;
+    margin:10px 0;
+  }
+  .ex{
+    background:rgba(0,0,0,0.025);
+    border:1px dashed var(--border);
+    border-radius:8px;
+    padding:10px 12px;
+    margin:10px 0;
+    font-size:13.5px;
+  }
+  .ex-title{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:6px;
+  }
+  table{ width:100%; border-collapse:collapse; font-size:13px; margin:10px 0; }
+  th,td{ border:1px solid var(--border); padding:6px 8px; text-align:left; }
+  th{ font-weight:500; color:var(--ink-soft); }
+  .katex{ font-size:1em; }
+  .katex-display{ margin:6px 0 !important; overflow-x:auto; overflow-y:hidden; }
+
+  @media (max-width: 480px){
+    h1{ font-size:20px; }
+    .body{ padding:0 12px 14px 12px; font-size:14px; }
+    summary{ font-size:14px; padding:12px 14px; }
+    table{ font-size:12px; display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    th,td{ padding:5px 6px; white-space:nowrap; }
+    .lesson h2{ font-size:17px; }
+    main{ padding:16px 12px 0 12px; }
+    header{ padding:14px 14px 0 14px; }
+  }
+
+  .progress-note{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:20px 0 0 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">TVZ · matematika 1 (INRO)</div>
+  <h1>Vodič za kolokvije i ispit</h1>
+  <div class="sub">Ažurira se nakon svake lekcije — gotovo: kompleksni, matrice/sustavi, vektori · u tijeku: funkcije, limesi, derivacije, tok funkcije</div>
+  <nav id="topnav"></nav>
+</header>
+
+<main id="lessons"></main>
+
+<div class="progress-note">+ nove lekcije dodaju se ispod — Gradivo 2. kolokvija (funkcije, limesi, l'Hospital, tok funkcije) stiže kasnije</div>
+
+<script>
+const lessons = [
+{
+  id: "kompleksni",
+  tag: "1. kolokvij",
+  tagClass: "tag-purple",
+  status: "done",
+  title: "Kompleksni brojevi",
+  sections: [
+    {
+      h: "Osnovni pojmovi",
+      body: `
+        <p>Kompleksan broj $z=x+yi$, gdje je $x=\\text{Re}(z)$ realni dio, a $y=\\text{Im}(z)$ imaginarni dio.</p>
+        <ul>
+          <li>Konjugat: $\\bar z = x-yi$</li>
+          <li>Modul: $|z|=\\sqrt{x^2+y^2}$, uvijek $\\ge 0$</li>
+          <li>$z\\cdot\\bar z = x^2+y^2 = |z|^2$ — koristi se kod dijeljenja</li>
+        </ul>
+      `
+    },
+    {
+      h: "Bazične operacije",
+      body: `
+        <p>Zbrajanje/oduzimanje: realno s realnim, imaginarno s imaginarnim. Množenje: "svaki sa svakim", $i^2=-1$.</p>
+        <div class="note">Dijeljenje — uvijek racionaliziraj množenjem s konjugiranim brojem nazivnika, ili koristi gotovu formulu:</div>
+        $$\\frac{z_1}{z_2} = \\frac{x_1x_2+y_1y_2}{x_2^2+y_2^2} + \\left(\\frac{y_1x_2-x_1y_2}{x_2^2+y_2^2}\\right)i$$
+        <div class="ex">
+          <div class="ex-title">Primjer</div>
+          $\\dfrac{4i^{35}}{3+i}$: prvo $i^{35}=i^{3}=-i$ (period 4), pa $\\dfrac{-4i}{3+i}\\cdot\\dfrac{3-i}{3-i}=\\dfrac{-4-12i}{10}=-\\dfrac25-\\dfrac65 i$
+        </div>
+        <div class="warn">Potenciranje $i^n$: svedi $n$ modulo 4 ($i,-1,-i,1$ se ponavlja).</div>
+      `
+    },
+    {
+      h: "Trigonometrijski i eksponencijalni zapis",
+      body: `
+        <p>$z=|z|(\\cos\\varphi+i\\sin\\varphi)=|z|e^{i\\varphi}$ — isti broj, dva zapisa. <b>Signal u zadatku:</b> množenje, dijeljenje, potenciranje ili korjenovanje — u algebarskom obliku je to teško, u ovom obliku lako.</p>
+        <p><b>Postupak:</b> odredi kvadrant po predznacima $x,y$ → $|z|=\\sqrt{x^2+y^2}$ → bazni kut $\\alpha=\\text{arctg}|y/x|$ → kvadrantna korekcija.</p>
+        <table>
+          <tr><th>Kvadrant</th><th>Predznaci</th><th>$\\varphi$</th></tr>
+          <tr><td>I</td><td>$x>0,y>0$</td><td>$\\alpha$</td></tr>
+          <tr><td>II</td><td>$x<0,y>0$</td><td>$\\pi-\\alpha$</td></tr>
+          <tr><td>III</td><td>$x<0,y<0$</td><td>$\\pi+\\alpha$</td></tr>
+          <tr><td>IV</td><td>$x>0,y<0$</td><td>$2\\pi-\\alpha$</td></tr>
+        </table>
+        <p>Specijalni slučajevi (na osi): pozitivna realna os $\\to 0$, pozitivna imaginarna $\\to \\pi/2$, negativna realna $\\to \\pi$, negativna imaginarna $\\to 3\\pi/2$.</p>
+        <div class="note">Množenje/dijeljenje u trig./eksp. obliku: moduli se množe/dijele, argumenti zbrajaju/oduzimaju.</div>
+        <div class="warn">Kalkulator mora biti u RAD modu, ne DEG. Provjeri prije ispita.</div>
+      `
+    },
+    {
+      h: "Potenciranje i korjenovanje",
+      body: `
+        <p><b>Signal u zadatku:</b> eksponent $n$ na kompleksnom broju, ili $\\sqrt[n]{z}$, ili jednadžba $z^n=\\dots$</p>
+        <p><b>De Moivre:</b></p>
+        $$z^n=|z|^n(\\cos(n\\varphi)+i\\sin(n\\varphi))$$
+        <p>Modul na $n$, argument puta $n$, pa svedi modulo $2\\pi$ (broj punih krugova zaokruži <b>na dolje</b>).</p>
+        <p><b>Korjenovanje</b> ($n$ je uvijek zadan brojem uz korijen ili eksponentom u jednadžbi, daje točno $n$ rješenja):</p>
+        $$w_k=\\sqrt[n]{|z|}\\left(\\cos\\frac{\\varphi+2k\\pi}{n}+i\\sin\\frac{\\varphi+2k\\pi}{n}\\right),\\quad k=0,1,\\dots,n-1$$
+        <div class="ex">
+          <div class="ex-title">Primjer — $z^3+27=0$</div>
+          $z^3=-27=27(\\cos\\pi+i\\sin\\pi)$, $n=3$. Rješenja: $z_1=-3$, $z_{2,3}=\\dfrac32\\pm\\dfrac{3\\sqrt3}{2}i$
+        </div>
+      `
+    },
+    {
+      h: "Skupovi točaka u Gaussovoj ravnini",
+      body: `
+        <p><b>Signal u zadatku:</b> "odredite i skicirajte skup točaka" + nejednakost/jednakost s modulom. x-os = realna os, y-os = imaginarna os.</p>
+        <ul>
+          <li>$|z-z_0|=r$ → kružnica (rub) polumjera $r$ oko $z_0$</li>
+          <li>$|z-z_0|<r$ → otvoreni krug (rub isključen, isprekidano)</li>
+          <li>$|z-z_0|\\le r$ → zatvoreni krug (rub uključen, puna linija)</li>
+          <li>$|z-z_0|>r$ → vanjština kruga</li>
+          <li>$|z-z_1|=|z-z_2|$ → simetrala dužine $z_1z_2$ (pravac okomit kroz polovište — <b>ne</b> sama dužina)</li>
+        </ul>
+        <div class="warn">Iz $z-z_0$ pazi na predznake: $z-2+i = z-(2-i)$, dakle $z_0=2-i$, ne $2+i$.</div>
+      `
+    },
+    {
+      h: "Jednadžbe s kompleksnim brojem",
+      body: `
+        <p><b>Signal u zadatku:</b> "odredite $z$ za koji vrijedi...". Postupak: ukloni razlomke množenjem, sredi sve članove sa $z$ na jednu stranu, izluči $z$, podijeli (racionaliziraj).</p>
+        <div class="ex">
+          <div class="ex-title">Primjer — $\\dfrac{13z}{z+1}=11-3i$</div>
+          $13z=(11-3i)(z+1) \\Rightarrow z[13-(11-3i)]=11-3i \\Rightarrow z(2+3i)=11-3i \\Rightarrow z=1-3i$
+        </div>
+        <p>Ako se pojavi $z^n$ umjesto $z$: prvo izoliraj $z^n$, pa korjenuj s odgovarajućim $n$ (kombinacija s prethodnom sekcijom).</p>
+      `
+    }
+  ]
+},
+{
+  id: "matrice",
+  tag: "1. kolokvij",
+  tagClass: "tag-blue",
+  status: "done",
+  title: "Matrice, determinante i sustavi jednadžbi",
+  sections: [
+    {
+      h: "Operacije s matricama",
+      body: `
+        <p>Tipovi (prepoznavanje): jedinična ($I$, jedinice na dijagonali), nul-matrica (sve nule), dijagonalna (nule izvan dijagonale), gornje/donjotrokutasta (nule ispod / iznad dijagonale).</p>
+        <table>
+          <tr><th>Operacija</th><th>Uvjet</th></tr>
+          <tr><td>$A^T$</td><td>uvijek — redak postaje stupac</td></tr>
+          <tr><td>$A\\pm B$</td><td>isti tip $m\\times n$</td></tr>
+          <tr><td>$\\alpha A$</td><td>uvijek</td></tr>
+          <tr><td>$A\\cdot B$</td><td>stupci od $A$ = redci od $B$</td></tr>
+          <tr><td>$A^n$</td><td>$A$ kvadratna, $A^n=A^{n-1}\\cdot A$</td></tr>
+        </table>
+        <div class="warn">Matrično množenje nije komutativno: $A\\cdot B \\ne B\\cdot A$ općenito. Prvo uvijek provjeri dimenzije — često jedan smjer množenja uopće nije definiran.</div>
+        <p><b>Simetrična</b>: $A^T=A$. <b>Antisimetrična</b>: $A^T=-A$ (uvijek nule na dijagonali, jer $a_{ii}=-a_{ii}$).</p>
+        <div class="ex">
+          <div class="ex-title">Matrični polinom</div>
+          $p(A)=5A^3+2A^2-4A+3I$ — konstanta uvijek postaje $\\cdot I$, ne smije ostati "goli" broj uz matricu.
+        </div>
+      `
+    },
+    {
+      h: "Determinanta",
+      body: `
+        $$\\det\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}=ad-bc$$
+        <p>Za 3×3 — Sarrusovo pravilo (prepiši prva dva stupca, zbroji 3 padajuće dijagonale, oduzmi 3 rastuće).</p>
+        <p><b>Laplaceov razvoj</b> (4×4 i veće, ili kad ima puno nula): razvoj po retku/stupcu s najviše nula —</p>
+        $$\\det A = \\sum_{j=1}^n (-1)^{i+j}a_{ij}M_{ij}$$
+        <p>$M_{ij}$ = minor (determinanta nakon brisanja $i$-tog retka i $j$-tog stupca). Predznak šahovski: $+-+-$ / $-+-+$...</p>
+        <div class="note">Svojstva: trokutasta matrica → $\\det$ = umnožak dijagonale. Dva jednaka/proporcionalna retka/stupca, ili redak/stupac samih nula → $\\det=0$. Zamjena dva retka → mijenja predznak. Dodavanje umnoška jednog retka drugom → $\\det$ se ne mijenja (korisno za svođenje na trokutastu formu prije računanja). $\\det(A^T)=\\det A$, $\\det(AB)=\\det A\\cdot\\det B$.</div>
+      `
+    },
+    {
+      h: "Inverzna matrica",
+      body: `
+        <p><b>Uvjet postojanja:</b> $A^{-1}$ postoji $\\iff \\det A \\ne 0$ (matrica je <b>regularna</b>). Ako je $\\det A=0$, matrica je <b>singularna</b>, inverz ne postoji. (Nije bitno koliki je $\\det A$ dokle god nije nula — ne treba biti $1$.)</p>
+        <p><b>Gauss-Jordan postupak:</b> $[A|I] \\sim \\cdots \\sim [I|A^{-1}]$, elementarnim transformacijama redaka, primijenjenim na cijeli redak (obje polovice) odjednom.</p>
+        <p>Sustavni redoslijed za $n\\times n$: <b>Faza 1</b> — stupac po stupac slijeva nadesno, eliminiraj ispod dijagonale. <b>Faza 2</b> — stupac po stupac zdesna nalijevo, eliminiraj iznad dijagonale.</p>
+        <div class="note">Prečac samo za 2×2 — "unakrsno": dijagonala ($a,d$) zamijeni mjesta, sporedna dijagonala ($b,c$) ostaje na mjestu ali mijenja predznak, pa sve podijeli determinantom:</div>
+        $$A^{-1}=\\frac{1}{\\det A}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$$
+        <div class="warn">Ovaj prečac radi SAMO za 2×2. Za 3×3 i veće — Gauss-Jordan ili kofaktori/adjunkta.</div>
+      `
+    },
+    {
+      h: "Matrične jednadžbe — izoliranje X",
+      body: `
+        <p>Ne postoji dijeljenje matricama — samo množenje inverzom, i mora se paziti s koje strane (množenje nije komutativno).</p>
+        <table>
+          <tr><th>Oblik</th><th>Rješenje</th></tr>
+          <tr><td>$AX=B$</td><td>množi <b>slijeva</b>: $X=A^{-1}B$</td></tr>
+          <tr><td>$XA=B$</td><td>množi <b>zdesna</b>: $X=BA^{-1}$</td></tr>
+          <tr><td>$AXB=C$</td><td>$X=A^{-1}CB^{-1}$ (lijevo i desno odvojeno)</td></tr>
+          <tr><td>$X\\pm A=B$</td><td>samo prebaci, BEZ inverza: $X=B\\mp A$</td></tr>
+          <tr><td>$ABCX=D$ (sve lijevo od X)</td><td>spoji u $M=ABC$, pa $X=M^{-1}D$</td></tr>
+        </table>
+        <div class="warn">$(PQ)^{-1}=Q^{-1}P^{-1}$ — redoslijed se okreće! Zato je sigurnije prvo pomnožiti blok u jednu konkretnu matricu $M$, pa tek nju invertirati, nego invertirati svaki faktor posebno.</div>
+        <div class="ex">
+          <div class="ex-title">Primjer — $A(A+B)BX=I$</div>
+          Označi $M=A(A+B)B$, izračunaj kao jednu matricu (paziti na redoslijed množenja!), pa $X=M^{-1}$.
+        </div>
+      `
+    },
+    {
+      h: "Sustavi linearnih jednadžbi",
+      body: `
+        <p>Sustav $A\\mathbf{x}=b$ — četiri metode, isti rezultat kad $\\det A\\ne0$, razlikuju se po pristupu:</p>
+        <table>
+          <tr><th>Metoda</th><th>Princip</th></tr>
+          <tr><td>Gaussova</td><td>$[A|b]\\to$ trokutasto (nule samo ispod dijagonale) $\\to$ supstitucija unatrag</td></tr>
+          <tr><td>Gauss-Jordanova</td><td>$[A|b]\\to$ potpuno reducirano (nule i iznad i ispod) $\\to$ rješenje izravno, bez supstitucije</td></tr>
+          <tr><td>Cramerova</td><td>$x_i=\\det(A_i)/\\det(A)$ — $A_i$ je $A$ sa $i$-tim stupcem zamijenjenim s $b$. Samo kad $\\det A\\ne0$.</td></tr>
+          <tr><td>Matrična (preko inverza)</td><td>$\\mathbf{x}=A^{-1}b$ — prvo nađeš $A^{-1}$, pa pomnožiš s $b$</td></tr>
+        </table>
+        <div class="note">Gauss i Gauss-Jordan su ISTA tehnika eliminacije, primijenjena na različite proširene matrice: $[A|b]$ za sustav, $[A|I]$ za traženje cijelog inverza. Za "riješite sustav" bez naznačene metode — Gaussova je najbrža (ne treba čistiti iznad dijagonale); ako profesor traži Gauss-Jordan eksplicitno ili nije siguran je li Gauss dovoljan, radi do kraja (potpuna redukcija) radi sigurnosti.</div>
+        <div class="ex">
+          <div class="ex-title">Cramer — brzi podsjetnik</div>
+          Svaki $x_i$ traži zamjenu SAMO $i$-tog stupca matrice $A$ stupcem $b$ (1. stupac za $x$, 2. za $y$, 3. za $z$...). Ostatak matrice ostaje nepromijenjen.
+        </div>
+
+        <p><b>Tipovi rješenja (prema $\\det A$):</b></p>
+        <table>
+          <tr><th>Uvjet</th><th>Tip rješenja</th></tr>
+          <tr><td>$\\det A \\ne 0$</td><td>jedinstveno rješenje</td></tr>
+          <tr><td>$\\det A = 0$, sustav konzistentan</td><td>beskonačno rješenja (parametarski)</td></tr>
+          <tr><td>$\\det A = 0$, sustav nekonzistentan</td><td>nema rješenja</td></tr>
+        </table>
+        <div class="warn">Kad je $\\det A=0$, Cramerova i matrična metoda NISU primjenjive (dijeljenje nulom) — jedino Gaussova/Gauss-Jordanova metoda otkriva je li sustav konzistentan i daje parametarsko rješenje ako postoji.</div>
+
+        <p><b>Parametarsko rješenje — kako prepoznati i zapisati:</b> nakon eliminacije, ako dobiješ redak sa samim nulama (npr. $0=0$), imaš manje pivota nego nepoznanica — preostaloj/preostalim nepoznanicama bez pivota dodijeliš slobodni parametar (npr. $z=t,\\ t\\in\\mathbb{R}$), pa ostale izraziš preko njega. Ako umjesto toga dobiješ redak oblika $0=k$ ($k\\ne0$) — sustav je nekonzistentan, nema rješenja.</p>
+
+        <p><b>Homogeni sustavi</b> ($A\\mathbf{x}=\\mathbf{0}$, svi slobodni članovi nula):</p>
+        <ul>
+          <li>UVIJEK ima barem trivijalno rješenje $\\mathbf{x}=\\mathbf{0}$ — "nema rješenja" nije moguća opcija</li>
+          <li>$\\det A\\ne0$ → SAMO trivijalno rješenje</li>
+          <li>$\\det A=0$ → beskonačno netrivijalnih rješenja (parametarski)</li>
+        </ul>
+        <div class="warn">Cramer kod homogenog sustava uvijek daje $x_i=0$ (jer je zamijenjeni stupac sav nula, $\\det A_i=0$) — to samo potvrđuje trivijalno rješenje, NE otkriva netrivijalna. Za netrivijalna rješenja ($\\det A=0$) mora se ići Gaussovom/Gauss-Jordanovom eliminacijom.</div>
+      `
+    }
+  ]
+},
+{
+  id: "vektori",
+  tag: "1. kolokvij",
+  tagClass: "tag-pink",
+  status: "done",
+  title: "Vektori i produkt vektora",
+  sections: [
+    {
+      h: "Osnovni pojmovi",
+      body: `
+        <p>Vektor $\\vec a=\\overrightarrow{AB}$ — određen modulom (duljinom), smjerom i orijentacijom. $\\overrightarrow{AB}=B-A$ (koordinata kraja minus koordinata početka).</p>
+        <ul>
+          <li><b>Kolinearni</b> vektori — leže na istom/paralelnim pravcima (2 vektora, "spljošteni" u 1D)</li>
+          <li><b>Komplanarni</b> vektori — leže u istoj ravnini (3 vektora, "spljošteni" u 2D umjesto 3D)</li>
+          <li>Jedinični vektor: $\\vec a^0=\\dfrac{1}{|\\vec a|}\\vec a$</li>
+        </ul>
+      `
+    },
+    {
+      h: "Linearna kombinacija vektora",
+      body: `
+        <p>Ako $\\vec a$ i $\\vec b$ <b>nisu kolinearni</b>, oni čine bazu ravnine koju razapinju — svaki vektor $\\vec c$ koji leži u toj istoj ravnini može se <b>jedinstveno</b> zapisati kao:</p>
+        $$\\vec c = \\alpha\\vec a+\\beta\\vec b, \\qquad \\alpha,\\beta\\in\\mathbb{R}$$
+        <p>$\\alpha$ i $\\beta$ su realni brojevi (skalari) — mogu biti bilo koji realan broj (pozitivan, negativan, razlomak), nisu ograničeni na duljine ili pozitivne vrijednosti. Oni govore koliko "dijelova" $\\vec a$ i koliko "dijelova" $\\vec b$ treba zbrojiti da dobiješ $\\vec c$, ne stvarnu geometrijsku duljinu samu po sebi.</p>
+        <div class="note"><b>Jedinstvenost:</b> ako $\\vec a,\\vec b$ nisu kolinearni, postoji TOČNO JEDAN par $(\\alpha,\\beta)$ za svaki $\\vec c$ u toj ravnini. Da su $\\vec a,\\vec b$ kolinearni, baza bi "kolabirala" u 1D i prikaz ne bi bio jedinstven (ili ne bi postojao za vektore izvan tog pravca).</div>
+        <p><b>Postupak rješavanja</b> (zadatak tipa "izrazite $\\vec e$ preko..."): tretiraj vektorske jednadžbe kao običan sustav — iz jedne jednadžbe izrazi "suvišnu" varijablu (vektor koji se ne traži u rezultatu), uvrsti je u drugu jednadžbu, sredi i izoliraj traženi vektor. Identično algebarsko rješavanje kao kod brojeva, samo "nepoznanice" su vektori.</p>
+        <div class="ex">
+          <div class="ex-title">Primjer — $2\\vec e-\\vec f+\\vec g=\\vec 0,\\ \\vec w=2\\vec e-4\\vec g$, izrazi $\\vec e$ preko $\\vec f,\\vec w$</div>
+          Iz 1. jedn.: $\\vec g=\\vec f-2\\vec e$. Uvrsti u 2.: $\\vec w=2\\vec e-4(\\vec f-2\\vec e)=10\\vec e-4\\vec f$. Izoliraj: $\\vec e=\\dfrac25\\vec f+\\dfrac{1}{10}\\vec w$.
+        </div>
+      `
+    },
+    {
+      h: "Skalarni produkt — okomitost, kut, duljina",
+      body: `
+        $$\\vec a\\cdot\\vec b=|\\vec a||\\vec b|\\cos\\varphi \\qquad\\text{preko koordinata}\\qquad \\vec a\\cdot\\vec b=a_xb_x+a_yb_y+a_zb_z$$
+        <p>Rezultat je BROJ (skalar). Koristi se kad zadatak traži <b>kut</b> između vektora ili <b>okomitost</b> — ne za površine/volumene (to ide na vektorski/mješoviti).</p>
+        <p><b>Duljina (modul) vektora</b> — poseban slučaj skalarnog produkta vektora sa samim sobom:</p>
+        $$|\\vec a| = \\sqrt{\\vec a\\cdot\\vec a} = \\sqrt{a_x^2+a_y^2+a_z^2}$$
+        <div class="warn">Okomitost — RAČUNANJE: zbroj umnožaka odgovarajućih koordinata, sve TRI komponente (ne samo dvije!): $\\vec a\\cdot\\vec b=a_xb_x+a_yb_y+a_zb_z$. Test: $\\vec a\\perp\\vec b \\iff \\vec a\\cdot\\vec b=0$.</div>
+        <p><b>Kut između vektora</b> — izoliraš $\\cos\\varphi$ iz definicije:</p>
+        $$\\cos\\varphi = \\frac{\\vec a\\cdot\\vec b}{|\\vec a||\\vec b|}$$
+        <p>Postupak: 1) izračunaj $\\vec a\\cdot\\vec b$ preko koordinata, 2) izračunaj $|\\vec a|$ i $|\\vec b|$ preko korijena sume kvadrata, 3) uvrsti u formulu, 4) $\\varphi=\\arccos(\\dots)$.</p>
+        <div class="note">$0\\le\\varphi<\\pi/2 \\Rightarrow \\vec a\\cdot\\vec b>0$ (šiljasti kut). $\\varphi=\\pi/2 \\Rightarrow \\vec a\\cdot\\vec b=0$ (okomiti). $\\pi/2<\\varphi\\le\\pi \\Rightarrow \\vec a\\cdot\\vec b<0$ (tupi kut). Predznak skalarnog produkta odmah govori o vrsti kuta, bez računanja $\\arccos$.</div>
+        <p>Svojstva: komutativan ($\\vec a\\cdot\\vec b=\\vec b\\cdot\\vec a$), $\\vec a\\cdot\\vec a=|\\vec a|^2$, $\\vec i\\cdot\\vec i=\\vec j\\cdot\\vec j=\\vec k\\cdot\\vec k=1$, $\\vec i\\cdot\\vec j=\\vec j\\cdot\\vec k=\\vec k\\cdot\\vec i=0$.</p>
+      `
+    },
+    {
+      h: "Vektorski produkt — površine i visine",
+      body: `
+        <p>Rezultat je VEKTOR, okomit na oba početna, duljine $|\\vec a||\\vec b|\\sin\\varphi$.</p>
+        $$\\vec a\\times\\vec b = \\begin{vmatrix}\\vec i&\\vec j&\\vec k\\\\a_x&a_y&a_z\\\\b_x&b_y&b_z\\end{vmatrix} = (a_yb_z-a_zb_y)\\vec i-(a_xb_z-a_zb_x)\\vec j+(a_xb_y-a_yb_x)\\vec k$$
+        <div class="warn">ANTIkomutativan (razlika od skalarnog!): $\\vec a\\times\\vec b=-\\vec b\\times\\vec a$. Zamjena redoslijeda mijenja predznak/smjer rezultata.</div>
+        <div class="note">Kriterij kolinearnosti: $\\vec a\\parallel\\vec b \\iff \\vec a\\times\\vec b=\\vec0$. Površina paralelograma: $P=|\\vec a\\times\\vec b|$. Površina trokuta: $P_\\triangle=\\frac12|\\vec a\\times\\vec b|$.</div>
+        <p><b>Formula za visinu na stranicu</b> (primjena površine) — kombiniraj vektorski produkt s običnom formulom $P=\\frac12\\cdot\\text{baza}\\cdot\\text{visina}$:</p>
+        $$v = \\frac{2P_\\triangle}{|\\text{baza}|} = \\frac{|\\vec a\\times\\vec b|}{|\\text{baza}|}$$
+        <p>Postupak: 1) izračunaj $\\vec a\\times\\vec b$ preko dva vektora iz trokuta (npr. dvije stranice iz istog vrha) → dobiješ $2P_\\triangle$, 2) podijeli s duljinom stranice na koju spuštaš visinu.</p>
+        <p>Kad koristiti koji produkt: <b>skalarni</b> za kut/okomitost, <b>vektorski</b> za površinu/visinu/kolinearnost.</p>
+      `
+    },
+    {
+      h: "Mješoviti produkt — svi volumeni",
+      body: `
+        $$(\\vec a\\times\\vec b)\\cdot\\vec c = \\begin{vmatrix}a_x&a_y&a_z\\\\b_x&b_y&b_z\\\\c_x&c_y&c_z\\end{vmatrix}$$
+        <p>Rezultat je BROJ — direktno determinanta 3×3 (Sarrus), retci = koordinate $\\vec a,\\vec b,\\vec c$ tim redoslijedom. Nije potrebno prvo eksplicitno računati $\\vec a\\times\\vec b$.</p>
+        <div class="note">Kriterij komplanarnosti: $(\\vec a\\times\\vec b)\\cdot\\vec c=0 \\iff$ vektori komplanarni (linearno zavisni).</div>
+        <p><b>Sva tri tijela razapeta vektorima $\\vec a,\\vec b,\\vec c$ — formule volumena:</b></p>
+        <table>
+          <tr><th>Tijelo</th><th>Volumen</th><th>Odnos</th></tr>
+          <tr><td>Paralelepiped</td><td>$V=|(\\vec a\\times\\vec b)\\cdot\\vec c|$</td><td>osnovni, cijeli</td></tr>
+          <tr><td>Trostrana prizma</td><td>$V_P=\\dfrac12|(\\vec a\\times\\vec b)\\cdot\\vec c|$</td><td>pola paralelepipeda</td></tr>
+          <tr><td>Tetraedar (trostrana piramida)</td><td>$V_T=\\dfrac16|(\\vec a\\times\\vec b)\\cdot\\vec c|$</td><td>šestina paralelepipeda</td></tr>
+        </table>
+        <div class="note">Odnosi se pamte geometrijski: paralelepiped se dijagonalnom ravninom dijeli na 2 jednaka trostrana prizme ($\\frac12$); prizma se dalje dijeli na 3 jednaka tetraedra ($\\frac12\\div3=\\frac16$ od cijelog paralelepipeda).</div>
+        <p><b>Baza paralelepipeda</b> (paralelogram razapet s $\\vec a,\\vec b$) — površina preko vektorskog produkta:</p>
+        $$P_{baza}=|\\vec a\\times\\vec b| \\qquad\\Rightarrow\\qquad \\text{visina } h=\\frac{V}{P_{baza}}=\\frac{|(\\vec a\\times\\vec b)\\cdot\\vec c|}{|\\vec a\\times\\vec b|}$$
+        <p>(visina paralelepipeda okomito na bazu razapetu s $\\vec a,\\vec b$ — kombinacija mješovitog i vektorskog produkta, isti princip kao formula za visinu trokuta)</p>
+      `
+    },
+    {
+      h: "Kolinearnost i komplanarnost — sažetak",
+      body: `
+        <table>
+          <tr><th>Pojam</th><th>Broj vektora</th><th>Test</th></tr>
+          <tr><td>Kolinearnost</td><td>2</td><td>$\\vec a\\times\\vec b=\\vec0$ (ili $\\vec a=\\lambda\\vec b$)</td></tr>
+          <tr><td>Komplanarnost</td><td>3</td><td>$(\\vec a\\times\\vec b)\\cdot\\vec c=0$</td></tr>
+        </table>
+        <p>Oba su oblici linearne zavisnosti — kod kolinearnosti jedan vektor je skalarni višekratnik drugog; kod komplanarnosti treći se može zapisati kao linearna kombinacija prva dva ($\\vec c=\\alpha\\vec a+\\beta\\vec b$).</p>
+        <div class="note">Ako su bilo koja DVA od tri vektora kolinearna → sva tri su automatski komplanarna. Obrat ne vrijedi — tri vektora mogu biti komplanarna a da nikoja dva nisu međusobno kolinearna.</div>
+        <p><i>Sekcija u tijeku — dolaze zadaci s paralelogramom (dijagonale) i kompletna primjena na realnim ispitnim primjerima.</i></p>
+      `
+    }
+  ]
+},
+{
+  id: "funkcije1",
+  tag: "2. kolokvij",
+  tagClass: "tag-teal",
+  status: "progress",
+  title: "Funkcije — 1. i 2. dio",
+  sections: [
+    {
+      h: "Osnovni pojmovi",
+      body: `
+        <p>Funkcija $f:D\\to K$ — domena $D$ (dozvoljeni $x$-evi, raspon po x-osi), slika/kodomena $K$ (stvarne vrijednosti funkcije, raspon po y-osi).</p>
+        <ul>
+          <li><b>Injekcija</b>: svaka horizontalna crta siječe graf <b>najviše jednom</b>. Uvjet za postojanje inverza.</li>
+          <li><b>Surjekcija</b>: svaki $y$ iz kodomene je dostignut kao vrijednost funkcije</li>
+          <li><b>Bijekcija</b>: injekcija + surjekcija</li>
+          <li><b>Ograničena</b>: $y$-vrijednosti između $-M$ i $M$ za neki $M>0$ — ne ide ni prema $\\pm\\infty$. Uvijek ograničene: $\\sin, \\cos, \\arcsin, \\arccos$.</li>
+          <li><b>Na grafu</b>: puna točka ● = uključena, šuplja točka ○ = isključena</li>
+        </ul>
+      `
+    },
+    {
+      h: "Domene — svi slučajevi",
+      body: `
+        <table>
+          <tr><th>Tip izraza</th><th>Uvjet</th><th>Rubne točke</th></tr>
+          <tr><td>$\\dfrac{P(x)}{Q(x)}$</td><td>$Q(x)\\ne0$</td><td>uvijek isključene $(\\;)$</td></tr>
+          <tr><td>$\\sqrt{f(x)}$, $\\sqrt[2n]{f(x)}$</td><td>$f(x)\\ge0$</td><td>nultočke uključene $[\\;]$</td></tr>
+          <tr><td>$\\sqrt[2n+1]{f(x)}$</td><td>bez uvjeta</td><td>—</td></tr>
+          <tr><td>$\\ln f(x)$, $\\log_a f(x)$</td><td>$f(x)>0$</td><td>uvijek isključene $(\\;)$</td></tr>
+          <tr><td>$\\arcsin f(x)$, $\\arccos f(x)$</td><td>$-1\\le f(x)\\le1$</td><td>uključene $[\\;]$</td></tr>
+          <tr><td>$\\text{arctg}$, $\\text{arcctg}$</td><td>bez uvjeta</td><td>—</td></tr>
+          <tr><td>$\\text{tg}\\, f(x)$</td><td>$f(x)\\ne\\frac\\pi2+k\\pi$</td><td>isključene</td></tr>
+          <tr><td>$[f(x)]^{g(x)}$</td><td>$f(x)>0$</td><td>isključene</td></tr>
+        </table>
+        <div class="note">Više uvjeta istovremeno → sve zasebno riješiš, pa <b>presječeš</b> skupove.</div>
+        <div class="warn">Kvadratna nejednakost: $a>0$ → U oblik → pozitivno <b>izvana</b>. $a<0$ → ∩ oblik → pozitivno <b>između</b>. Množenje/dijeljenje s negativnim brojem <b>okreće smjer</b> nejednakosti!</div>
+      `
+    },
+    {
+      h: "Parnost i neparnost",
+      body: `
+        <p>Uvrsti $-x$, sredi, usporedi s $f(x)$ i $-f(x)$.</p>
+        <ul>
+          <li><b>Parna</b>: $f(-x)=f(x)$ — simetrična na y-os</li>
+          <li><b>Neparna</b>: $f(-x)=-f(x)$ — simetrična na ishodište</li>
+          <li><b>Niti niti</b>: ni jedno</li>
+        </ul>
+        <div class="note">Brzi signal: sve potencije <b>parne</b> ($x^2,x^4$...) → parna. Sve <b>neparne</b> ($x,x^3$...) → neparna. Mješavina → niti niti.</div>
+      `
+    },
+    {
+      h: "Inverz funkcije — skidanje slojeva",
+      body: `
+        <p><b>Uvjet:</b> $f$ mora biti injektivna (strogo monotona). <b>Postupak:</b> $y=f(x)$ → zamijeni $x\\leftrightarrow y$ → izrazi $y$ skidanjem slojeva izvana prema unutra.</p>
+        <table>
+          <tr><th>Imaš</th><th>Primijeniš</th><th>Dobiješ</th></tr>
+          <tr><td>$\\ln(\\dots)$</td><td>$e^{(\\cdot)}$ na obje strane</td><td>argument bez ln</td></tr>
+          <tr><td>$e^{(\\dots)}$</td><td>$\\ln$ na obje strane</td><td>eksponent bez e</td></tr>
+          <tr><td>$\\arcsin(\\dots)$</td><td>$\\sin$ na obje strane</td><td>argument bez arcsin</td></tr>
+          <tr><td>$\\arccos(\\dots)$</td><td>$\\cos$ na obje strane</td><td>argument bez arccos</td></tr>
+          <tr><td>$\\arctan(\\dots)$</td><td>$\\text{tg}$ na obje strane</td><td>argument bez arctan</td></tr>
+          <tr><td>$\\sin(\\dots)$</td><td>$\\arcsin$ na obje strane</td><td>argument bez sin*</td></tr>
+          <tr><td>$\\cos(\\dots)$</td><td>$\\arccos$ na obje strane</td><td>argument bez cos*</td></tr>
+        </table>
+        <p>*kod sin/cos pazi na periodičnost — jednadžba ima beskonačno rješenja.</p>
+        <div class="note">Više slojeva → skidaš izvana prema unutra, jedan po jedan. $e^{\\sin(x)}=2 \\Rightarrow \\sin(x)=\\ln 2 \\Rightarrow x=\\arcsin(\\ln 2)$</div>
+        <div class="warn">Pazi na predznake kod prebacivanja: $2y-1=e^x \\Rightarrow y=\\frac{e^x+1}{2}$, ne $\\frac{1-e^x}{2}$. Čest izvor greške.</div>
+      `
+    },
+    {
+      h: "e, ln i trig — ključne vrijednosti napamet",
+      body: `
+        <table>
+          <tr><th>Izraz</th><th>Vrijednost</th></tr>
+          <tr><td>$e^0$</td><td>$1$</td></tr>
+          <tr><td>$e^1$</td><td>$e\\approx2.718$</td></tr>
+          <tr><td>$e^{-\\infty}$</td><td>$0$</td></tr>
+          <tr><td>$e^{+\\infty}$</td><td>$\\infty$</td></tr>
+          <tr><td>$\\ln(1)$</td><td>$0$</td></tr>
+          <tr><td>$\\ln(e)$</td><td>$1$</td></tr>
+          <tr><td>$\\ln(0^+)$</td><td>$-\\infty$</td></tr>
+        </table>
+        <p><b>Logaritamska pravila (za sređivanje izraza):</b></p>
+        <table>
+          <tr><th>Pravilo</th><th>Formula</th></tr>
+          <tr><td>Produkt</td><td>$\\ln(a\\cdot b)=\\ln a+\\ln b$</td></tr>
+          <tr><td>Kvocijent</td><td>$\\ln(a/b)=\\ln a-\\ln b$</td></tr>
+          <tr><td>Potencija</td><td>$\\ln(a^n)=n\\cdot\\ln a$</td></tr>
+          <tr><td>Baza e</td><td>$e^{\\ln a}=a$</td></tr>
+        </table>
+        <p><b>Trigonometrijske vrijednosti (napamet):</b></p>
+        <table>
+          <tr><th>Kut</th><th>sin</th><th>cos</th><th>tg</th></tr>
+          <tr><td>$0$</td><td>$0$</td><td>$1$</td><td>$0$</td></tr>
+          <tr><td>$\\pi/6$</td><td>$1/2$</td><td>$\\sqrt3/2$</td><td>$1/\\sqrt3$</td></tr>
+          <tr><td>$\\pi/4$</td><td>$\\sqrt2/2$</td><td>$\\sqrt2/2$</td><td>$1$</td></tr>
+          <tr><td>$\\pi/3$</td><td>$\\sqrt3/2$</td><td>$1/2$</td><td>$\\sqrt3$</td></tr>
+          <tr><td>$\\pi/2$</td><td>$1$</td><td>$0$</td><td>—</td></tr>
+          <tr><td>$\\pi$</td><td>$0$</td><td>$-1$</td><td>$0$</td></tr>
+        </table>
+        <div class="note">Pamtilo za tg: $1/\\sqrt3\\to1\\to\\sqrt3$ uz kuteve $\\pi/6,\\pi/4,\\pi/3$.</div>
+      `
+    },
+    {
+      h: "Kompozicija, nultočke/polovi i Horner",
+      body: `
+        $$(f\\circ g)(x)=f(g(x)) \\quad\\text{— prvo unutarnja } g\\text{, pa vanjska }f$$
+        <p><b>Nultočke:</b> $f(x)=0$ → nultočke su nultočke <b>brojnika</b> (uz uvjet da nisu i nultočke nazivnika).</p>
+        <p><b>Polovi racionalne funkcije:</b> nultočke <b>nazivnika</b> gdje brojnik $\\ne0$. <b>Kratnost</b> nultočke/pola = eksponent odgovarajućeg linearnog faktora pri rastavljanju.</p>
+        <p><b>Hornerov algoritam</b> — dijeljenje polinoma $p(x)$ s $(x-a)$: zapiši koeficijente u redak, spusti prvi, množi s $a$, zbroji, ponavljaj. Zadnji broj = ostatak. Ako ostatak $=0$, $a$ je nultočka i $p(x)=(x-a)\\cdot q(x)$. Primjenjuješ iterativno za svaku nultočku dok ne dobiješ kvadratni faktor.</p>
+      `
+    }
+  ]
+},
+{
+  id: "tok",
+  tag: "2. kolokvij",
+  tagClass: "tag-coral",
+  status: "progress",
+  title: "Limesi, derivacije i tok funkcije",
+  sections: [
+    {
+      h: "Često korišteni limesi i neodređeni oblici",
+      body: `
+        <table>
+          <tr><th>Limes</th><th>Vrijednost</th><th>Primjena</th></tr>
+          <tr><td>$\\lim_{x\\to0}\\dfrac{\\sin x}{x}$</td><td>$1$</td><td>namjestiš isti argument gore i dolje</td></tr>
+          <tr><td>$\\lim_{x\\to0}\\dfrac{e^x-1}{x}$</td><td>$1$</td><td>eksponencijalna u limesu</td></tr>
+          <tr><td>$\\lim_{x\\to\\pm\\infty}\\dfrac{1}{x^n}$</td><td>$0$</td><td>racionalne funkcije za $x\\to\\infty$</td></tr>
+          <tr><td>$\\lim_{x\\to\\pm\\infty}\\left(1+\\frac1x\\right)^x$</td><td>$e$</td><td>definicija broja $e$</td></tr>
+        </table>
+        <p>Neodređeni oblici: $\\frac00$, $\\frac\\infty\\infty$, $0\\cdot\\infty$, $\\infty-\\infty$, $0^0$, $1^\\infty$, $\\infty^0$ — ne možeš direktno uvrstiti.</p>
+
+        <p><b>Tip 1 — Direktno uvrštavanje:</b> uvijek prvo pokušaj. Ako dobiješ konačan broj koji nije neodređeni oblik — gotovo.</p>
+
+        <p><b>Tip 2 — Racionalne funkcije $x\\to\\infty$:</b> usporedi stupnjeve. Stupanj broji &lt; naziv → $0$. Jednaki → omjer vodećih koef. Broji &gt; naziv → $\\pm\\infty$ (kosa asimptota).</p>
+
+        <p><b>Tip 3 — Oblik $\\frac00$ s rastavljanjem:</b> rastaviš i skratiš zajednički faktor $(x-c)$.</p>
+
+        <p><b>Tip 4 — Oblik $\\frac00$ s korijenom:</b> množiš konjugatom $(a-b)(a+b)=a^2-b^2$ da eliminiraš korijen.</p>
+
+        <p><b>Tip 5 — Trigonometrijski limesi:</b></p>
+        <div class="ex">
+          <div class="ex-title">Trik</div>
+          $\\frac{\\sin(kx)}{x} = k\\cdot\\frac{\\sin(kx)}{kx}\\to k$. Za $\\frac{a\\sin(mx)}{b\\sin(nx)}$: rezultat je odmah $\\frac{a\\cdot m}{b\\cdot n}$.
+        </div>
+        <div class="warn">Nikad ne "kraćeš" sin — uvijek namjestiš oblik $\\frac{\\sin u}{u}\\to1$.</div>
+
+        <p><b>Tip 6 — Oblik $\\infty-\\infty$ s korijenom:</b> množiš konjugatom, pa dijeliš s $x$ (unutar korijena ulazi kao $x^2$!).</p>
+        <div class="note">$x$ "dobije potenciju" kad uđe pod korijen: $\\frac{\\sqrt{x^2+ax}}{x}=\\sqrt{1+\\frac{a}{x}}$. Korijeni se ne zbrajaju: $\\sqrt1+\\sqrt1=1+1=2$, ne $\\sqrt2$.</div>
+
+        <p><b>Tip 7 — Supstitucija kad $x\\to c\\ne0$:</b> uvedi $t=x-c$, pa $t\\to0$. Rezultat je broj — ne moraš vraćati natrag.</p>
+      `
+    },
+    {
+      h: "L'Hospitalovo pravilo",
+      body: `
+        <p>Koristi kad dobiješ $\\frac00$ ili $\\frac\\infty\\infty$ — deriviraš <b>posebno</b> brojnik i posebno nazivnik:</p>
+        $$\\lim_{x\\to c}\\frac{f(x)}{g(x)} = \\lim_{x\\to c}\\frac{f'(x)}{g'(x)}$$
+        <div class="warn">L'Hospital se primjenjuje samo na $\\frac00$ i $\\frac\\infty\\infty$. Ostale neodređene oblike ($0\\cdot\\infty$, $\\infty-\\infty$, $0^0$, $1^\\infty$, $\\infty^0$) prvo algebraički svedeš na jedan od ta dva oblika, pa primijeniš. Može se primijeniti više puta uzastopno. NE deriviraš kao kvocijent $(f/g)'$ — deriviraš $f$ i $g$ <b>posebno</b>!</div>
+        <p>Svođenje ostalih oblika: $0\\cdot\\infty$ → prepiši kao $\\frac{0}{1/\\infty}$ ili $\\frac{\\infty}{1/0}$. $1^\\infty$, $0^0$, $\\infty^0$ → primijeni $\\ln$ na izraz, svedеš na $0\\cdot\\infty$, pa dalje.</p>
+      `
+    },
+    {
+      h: "Derivacije — tablične i pravila",
+      body: `
+        <table>
+          <tr><th>Funkcija</th><th>Derivacija</th></tr>
+          <tr><td>$x^n$</td><td>$nx^{n-1}$</td></tr>
+          <tr><td>$e^x$</td><td>$e^x$</td></tr>
+          <tr><td>$\\ln x$</td><td>$1/x$</td></tr>
+          <tr><td>$a^x$</td><td>$a^x\\ln a$ (za $e$: $\\ln e=1$ pa ostaje $e^x$)</td></tr>
+          <tr><td>$\\sin x$</td><td>$\\cos x$</td></tr>
+          <tr><td>$\\cos x$</td><td>$-\\sin x$ (pazi na minus!)</td></tr>
+          <tr><td>$\\text{tg}\\,x$</td><td>$1/\\cos^2 x$</td></tr>
+          <tr><td>$\\text{ctg}\\,x$</td><td>$-1/\\sin^2 x$</td></tr>
+          <tr><td>$\\arcsin x$</td><td>$1/\\sqrt{1-x^2}$</td></tr>
+          <tr><td>$\\arccos x$</td><td>$-1/\\sqrt{1-x^2}$</td></tr>
+          <tr><td>$\\text{arctg}\\,x$</td><td>$1/(1+x^2)$</td></tr>
+        </table>
+
+        <p><b>Tip 1 — Zbroj/razlika:</b> deriviraš član po član, konstanta nestaje.</p>
+
+        <p><b>Tip 2 — Produkt</b> $(uv)'=u'v+uv'$: dva odvojena člana koja se <b>zbrajaju</b>, ne množe!</p>
+        <div class="warn">$(uv)' \\ne u'\\cdot v'$ — najčešća greška. I $(u'v+uv')$ su dva člana sa $+$ između, ne jedan veliki produkt svih faktora.</div>
+
+        <p><b>Tip 3 — Kvocijent</b> $\\left(\\frac{u}{v}\\right)'=\\frac{u'v-uv'}{v^2}$: redoslijed je bitan — "derivirana gore · nepromijenjena dolje, minus, nepromijenjena gore · derivirana dolje".</p>
+        <div class="warn">Kad je $v=\\cos x$, tada $v'=-\\sin x$ (negativno) — u formuli $-uv'$ dobiješ minus puta minus = plus. Piši $v'$ eksplicitno prije uvrštavanja da izbjegneš grešku.</div>
+
+        <p><b>Tip 4 — Složena funkcija</b> $(f(g(x)))'=f'(g(x))\\cdot g'(x)$: deriviraš vanjsku (ostaviš unutarnju netaknutu), množiš derivacijom unutarnje. Više slojeva = više faktora, idеš izvana prema unutra.</p>
+        <div class="ex">
+          <div class="ex-title">Tablica sin/cos sa složenom</div>
+          $(\\sin(g))' = g'\\cos(g)$ · $(\\cos(g))' = -g'\\sin(g)$ · $(\\ln(g))' = g'/g$ · $(e^g)' = e^g\\cdot g'$
+        </div>
+        <div class="note">$\\frac{\\cos(g)}{\\sin(g)}=\\text{ctg}(g)$ i $\\frac{\\sin(g)}{\\cos(g)}=\\text{tg}(g)$ — kratica vrijedi samo kad je <b>isti argument</b> unutar oba.</div>
+
+        <p><b>Tip 5 — Produkt + složena:</b> svaki faktor deriviraš zasebno (uz složenu gdje treba), pa sklopiš u $u'v+uv'$.</p>
+
+        <p><b>Tip 6 — Logaritamska derivacija</b> — koristi kad je $f(x)=[u(x)]^{v(x)}$ (i baza i eksponent su funkcije od $x$):</p>
+        <p>1) primijeni $\\ln$ na obje strane: $\\ln f = v\\cdot\\ln u$</p>
+        <p>2) deriviraj obje strane: $\\frac{f'}{f} = (v\\cdot\\ln u)'$ (produkt!)</p>
+        <p>3) izoliraj: $f' = f\\cdot(v\\cdot\\ln u)'$</p>
+        <div class="ex">
+          <div class="ex-title">Primjer</div>
+          $(\\sin x)^x$: $\\ln f = x\\ln(\\sin x)$ → $f'/f = \\ln(\\sin x)+x\\cdot\\text{ctg}(x)$ → $f'=(\\sin x)^x(\\ln(\\sin x)+x\\cdot\\text{ctg}(x))$
+        </div>
+
+        <div class="warn"><b>Jednadžba tangente</b> na krivulju $f$ u točki $x_0$: $y=f(x_0)+f'(x_0)(x-x_0)$. Nagib tangente = $f'(x_0)$. Nagib normale = $-1/f'(x_0)$.</div>
+
+        <p><b>$\\sin(x\\cdot y)\\ne\\sin(x)\\cdot\\sin(y)$</b> — sin i cos nisu linearne funkcije, konstanta se ne može vaditi iz argumenta. Jedino $\\ln(a\\cdot b)=\\ln a+\\ln b$ ima to svojstvo.</p>
+      `
+    },
+    {
+      h: "Tok funkcije — redoslijed koraka",
+      body: `
+        <table>
+          <tr><th>Korak</th><th>Što</th><th>Alat</th></tr>
+          <tr><td>1.</td><td>Domena</td><td>tablica uvjeta za domenu</td></tr>
+          <tr><td>2.</td><td>Sjecišta s osima</td><td>$f(x)=0$ za x-os, $f(0)$ za y-os</td></tr>
+          <tr><td>3.</td><td>Parnost/neparnost/periodičnost</td><td>$f(-x)$ vs $f(x)$</td></tr>
+          <tr><td>4.</td><td>Monotonost i ekstremi</td><td>$f'(x)=0$, predznak $f'$</td></tr>
+          <tr><td>5.</td><td>Konveksnost/konkavnost, infleksija</td><td>$f''(x)=0$, predznak $f''$</td></tr>
+          <tr><td>6.</td><td>Asimptote</td><td>limesi prema rubovima domene</td></tr>
+          <tr><td>7.</td><td>Graf</td><td>sve gore + skiciraj</td></tr>
+        </table>
+        <div class="note">$f'>0$ → rastuća ↗. $f'<0$ → padajuća ↘. Prijelaz ↘→↗ = lokalni minimum. Prijelaz ↗→↘ = lokalni maksimum.</div>
+        <div class="note">$f''>0$ → konveksna ∪. $f''<0$ → konkavna ∩. Prijelaz konveksna↔konkavna = točka infleksije.</div>
+        <div class="warn">Asimptote: vertikalna $x=x_0$ gdje $f\\to\\pm\\infty$ (rubovi domene, polovi). Horizontalna $y=L$ gdje $\\lim_{x\\to\\pm\\infty}f(x)=L$. Kosa $y=kx+n$: $k=\\lim_{x\\to\\pm\\infty}\\frac{f(x)}{x}$, $n=\\lim_{x\\to\\pm\\infty}(f(x)-kx)$ — postoji samo ako horizontalna ne postoji.</div>
+        <p><b>Vertikalne asimptote — kako odrediti smjer:</b> uvrsti testni broj malo lijevo i malo desno od asimptote u originalnu $f(x)$. Gledaš predznak rezultata — mali pozitivan nazivnik → $+\\infty$, mali negativan → $-\\infty$ (uz pozitivan brojnik).</p>
+        <p><b>Horizontalna asimptota — trik za racionalne funkcije:</b> podijeli sve s najvećom potencijom u nazivniku, pa $\\frac{1}{x^n}\\to0$ za $x\\to\\pm\\infty$. Ostaje samo omjer vodećih koeficijenata.</p>
+        <p><b>Kosa asimptota</b> postoji samo ako horizontalna <b>ne postoji</b> — nikad obje zajedno.</p>
+        <div class="note">Tri grane grafa (kod dviju vertikalnih asimptota): vanjske grane opisuju ponašanje za $x\\to\\pm\\infty$ → horizontalna asimptota ("strop u daljini"). Sve grane uz vertikalne asimptote opisuju ponašanje blizu $x=x_0$ → vertikalna asimptota ("zid"). To su dvije potpuno različite priče.</div>
+        <p><b>Jednadžba tangente</b> u točki $x_0$: $y=f(x_0)+f'(x_0)(x-x_0)$. Ako $f'(x_0)=0$: tangenta je horizontalna $y=f(x_0)$.</p>
+        <p><b>Jednadžba normale</b> u točki $x_0$: $y=f(x_0)-\\dfrac{1}{f'(x_0)}(x-x_0)$. Ako $f'(x_0)=0$: normala je vertikalna $x=x_0$.</p>
+        <div class="warn">Kad normala prolazi ishodištem: uvrsti $(x,y)=(0,0)$ u jednadžbu normale i dobiveš jednadžbu za $x_0$ iz koje ga izračunaš, pa tek onda pišeš konačnu jednadžbu normale. $x_0$ i ishodište su dvije <b>različite</b> točke na istom pravcu!</div>
+      `
+    }
+  ]
+}
+];
+
+const colorTags = {
+  purple: "tag-purple", teal: "tag-teal", pink: "tag-pink",
+  coral: "tag-coral", blue: "tag-blue", amber: "tag-amber"
+};
+
+function render(){
+  const main = document.getElementById('lessons');
+  const nav = document.getElementById('topnav');
+  main.innerHTML = '';
+  nav.innerHTML = '';
+  lessons.forEach(lesson => {
+    const a = document.createElement('a');
+    a.href = '#' + lesson.id;
+    a.textContent = lesson.title;
+    a.dataset.status = lesson.status;
+    nav.appendChild(a);
+
+    const div = document.createElement('div');
+    div.className = 'lesson';
+    div.id = lesson.id;
+    let secHtml = lesson.sections.map((s,i) => `
+      <details ${i===0 ? '' : ''}>
+        <summary>${s.h}<span class="chev">+</span></summary>
+        <div class="body">${s.body}</div>
+      </details>
+    `).join('');
+    div.innerHTML = `
+      <div class="lesson-head">
+        <span class="lesson-tag ${lesson.tagClass}">${lesson.tag}</span>
+        <h2>${lesson.title}</h2>
+      </div>
+      ${secHtml}
+    `;
+    main.appendChild(div);
+  });
+}
+render();
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ]
+  });
+});
+window.addEventListener('load', () => {
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "$", right: "$", display: false}
+      ]
+    });
+  }
+});
+</script>
+</body>
+</html>
